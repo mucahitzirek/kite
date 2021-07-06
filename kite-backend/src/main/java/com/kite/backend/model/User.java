@@ -3,6 +3,7 @@ package com.kite.backend.model;
 import com.sun.istack.NotNull;
 import lombok.*;
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @Getter
@@ -10,11 +11,14 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user")
 @ToString
-public class User {
+public class User implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    private String username;
 
     @NotNull
     private String firstName;

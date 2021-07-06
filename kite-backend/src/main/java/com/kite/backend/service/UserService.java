@@ -3,6 +3,8 @@ package com.kite.backend.service;
 import com.kite.backend.exception.NotFoundException;
 import com.kite.backend.model.User;
 import com.kite.backend.repository.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +24,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<User> getTrainers() {
+    @Cacheable(cacheNames = "userListCache")
+    public List<User> getUsers() throws InterruptedException{
         return userRepository.findAll();
+    }
+
+    @CacheEvict(cacheNames = "userListCache")
+    public void clearCache(){
+        //...
+        System.out.println("userListCache cleaned");
     }
 
     public void delete(long id) {

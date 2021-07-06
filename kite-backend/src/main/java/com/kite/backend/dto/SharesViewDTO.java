@@ -24,5 +24,5 @@ public class SharesViewDTO {
         this.content = shares.getContent();
         this.comments = shares.getComments();
     }
-    
+
 }

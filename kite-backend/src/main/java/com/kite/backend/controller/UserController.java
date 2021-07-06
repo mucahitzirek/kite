@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/1.0")
 public class UserController {
 
+    private int counter = 0;
+
     @Autowired
     private UserService userService;
 
@@ -23,9 +25,14 @@ public class UserController {
         return new UserViewDTO(userService.save(user));
     }
 
-    @GetMapping("/user")
-    public List<UserViewDTO> getUsers() {
-        return userService.getTrainers().stream().map(UserViewDTO::new).collect(Collectors.toList());
+    @GetMapping("/users")
+    public List<UserViewDTO> getUsers() throws InterruptedException {
+        if (counter == 5) {
+            userService.clearCache();
+            counter = 0;
+        }
+        counter++;
+        return userService.getUsers().stream().map(UserViewDTO::new).collect(Collectors.toList());
     }
 
     @GetMapping("/user/{id:[0-9]+}")
